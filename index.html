@@ -197,6 +197,123 @@
 <h3 id="average-of-a-die-roll-with-disadvantage-n-faces">Average of a die roll with disadvantage (n faces)</h3>
 <p><span class="math display">\[\frac{n}{3} + \frac{1}{2} + \frac{1}{6n}\]</span></p>
 <p>(Equals 7.175 for a d20.)</p>
+<h3 id="probability-mass-function-of-a-roll-with-disadvantage">Probability mass function of a roll with disadvantage</h3>
+<p>The probability of rolling any specific result <span class="math inline">\(x\)</span> out of <span class="math inline">\(m\)</span> rolls of dice with <span class="math inline">\(n\)</span> sides at advantage is equal to</p>
+<p><span class="math display">\[P(X = x) = p(x) = \frac{x^m - (x-1)^m}{n^m}\]</span></p>
+<p>And the PMF when rolling at disadvantage is</p>
+<p><span class="math display">\[P(Y = x) = \frac{(n-x+1)^m - (n-x)^m }{n^m} \]</span></p>
+<p>You can also use the following table.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Roll</th>
+<th>Advantage</th>
+<th>Disadvantage</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>0.0025</td>
+<td>0.0975</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>0.0075</td>
+<td>0.0925</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>0.0125</td>
+<td>0.0875</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>0.0175</td>
+<td>0.0825</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>0.0225</td>
+<td>0.0775</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>0.0275</td>
+<td>0.0725</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>0.0325</td>
+<td>0.0675</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>0.0375</td>
+<td>0.0625</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>0.0425</td>
+<td>0.0575</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>0.0475</td>
+<td>0.0525</td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td>0.0525</td>
+<td>0.0475</td>
+</tr>
+<tr class="even">
+<td>12</td>
+<td>0.0575</td>
+<td>0.0425</td>
+</tr>
+<tr class="odd">
+<td>13</td>
+<td>0.0625</td>
+<td>0.0375</td>
+</tr>
+<tr class="even">
+<td>14</td>
+<td>0.0675</td>
+<td>0.0325</td>
+</tr>
+<tr class="odd">
+<td>15</td>
+<td>0.0725</td>
+<td>0.0275</td>
+</tr>
+<tr class="even">
+<td>16</td>
+<td>0.0775</td>
+<td>0.0225</td>
+</tr>
+<tr class="odd">
+<td>17</td>
+<td>0.0825</td>
+<td>0.0175</td>
+</tr>
+<tr class="even">
+<td>18</td>
+<td>0.0875</td>
+<td>0.0125</td>
+</tr>
+<tr class="odd">
+<td>19</td>
+<td>0.0925</td>
+<td>0.0075</td>
+</tr>
+<tr class="even">
+<td>20</td>
+<td>0.0975</td>
+<td>0.0025</td>
+</tr>
+</tbody>
+</table>
 <h2 id="accuracy">Accuracy</h2>
 <p>Note that accuracy is bounded within 0.05 to 0.95 (without advantage/disadvantage), because natural 1s always miss and 20s always hit. An attack roll that ties with AC hits. The math for passing an ability check or saving throw is the same as for landing an attack, using the DC instead of the enemy AC. Ability checks and saves are bounded within 0 to 1, with no automatic success or failures on natural 20s or 1s.</p>
 <p>Chance to hit and chance to miss can be converted from one to the other by subtracting the chance from 1.</p>
