@@ -41,7 +41,7 @@ And the PMF when rolling at disadvantage is
 
 $$P(X = x) = \frac{(n-x+1)^m - (n-x)^m }{n^m} $$
 
-You can also use the following table.
+You can also use the following table, which shows probabilities of different rolls when rolling 2d20 at advantage or disadvantage.
 
 Roll | Advantage | Disadvantage
 -----+-----------+--------------
