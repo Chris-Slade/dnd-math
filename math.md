@@ -35,11 +35,11 @@ $$\frac{n}{3} + \frac{1}{2} + \frac{1}{6n}$$
 
 The probability of rolling any specific result $x$ out of $m$ rolls of dice with $n$ sides at advantage is equal to
 
-$$P(X = x) = p(x) = \frac{x^m - (x-1)^m}{n^m}$$
+$$P(X = x) = \frac{x^m - (x-1)^m}{n^m}$$
 
 And the PMF when rolling at disadvantage is
 
-$$P(Y = x) = \frac{(n-x+1)^m - (n-x)^m }{n^m} $$
+$$P(X = x) = \frac{(n-x+1)^m - (n-x)^m }{n^m} $$
 
 You can also use the following table.
 
