@@ -153,193 +153,228 @@
 <header id="title-block-header">
 <h1 class="title">D&amp;D Math</h1>
 </header>
-<h1 id="dd-math">D&amp;D Math</h1>
-<h2 id="d20-rolls">d20 Rolls</h2>
-<h3 id="average-of-a-die-roll">Average of a die roll</h3>
-<p><span class="math display">\[\frac{(\text{min} + \text{max})}{2}\]</span></p>
+<h1 id="dice-probability">Dice Probability</h1>
+<h2 id="single-die">Single die</h2>
+<p>When rolling a single die with <span class="math inline">\(k\)</span> sides, the probability of any given outcome is <span class="math inline">\(\frac{1}{k}\)</span>.</p>
+<h2 id="multiple-dice">Multiple dice</h2>
+<h3 id="highest-value-advantage">Highest value (advantage)</h3>
+<p>The probability of the highest roll out of <span class="math inline">\(n\)</span> rolls of <span class="math inline">\(k\)</span>-sided dice equaling some value <span class="math inline">\(x\)</span> is given by</p>
+<p><span class="math display">\[p(x; n, k) = \frac{x^n - (x-1)^n}{k^n}\]</span></p>
+<h4 id="anydice">AnyDice</h4>
+<pre><code>output [highest 1 of NdK] = X
+output 1@NdK = X    \ Alternative syntax \</code></pre>
+<h3 id="lowest-value-disadvantage">Lowest value (disadvantage)</h3>
+<p>The probability of the lowest roll out of <span class="math inline">\(n\)</span> rolls of <span class="math inline">\(k\)</span>-sided dice equaling some value <span class="math inline">\(x\)</span> is given by</p>
+<p><span class="math display">\[p(x; n, k) = \frac{(k-x+1)^n - (k-x)^n }{k^n} \]</span></p>
+<h4 id="anydice-1">AnyDice</h4>
+<pre><code>output [lowest 1 of NdK] = X
+output N@NdK = X    \ Alternative syntax \</code></pre>
+<p>For advantage and disadvantage, these formulae can be applied with <span class="math inline">\(n = 2\)</span> and <span class="math inline">\(k = 20\)</span>. The following table shows the values of these distributions.</p>
 <table>
 <thead>
 <tr class="header">
-<th>Die</th>
-<th>Average</th>
+<th style="text-align: right;">Roll (<span class="math inline">\(x\)</span>)</th>
+<th style="text-align: center;">Advantage</th>
+<th style="text-align: center;">Disadvantage</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>d4</td>
-<td>2.5</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: center;">0.0025</td>
+<td style="text-align: center;">0.0975</td>
 </tr>
 <tr class="even">
-<td>d6</td>
-<td>3.5</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: center;">0.0075</td>
+<td style="text-align: center;">0.0925</td>
 </tr>
 <tr class="odd">
-<td>d8</td>
-<td>4.5</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: center;">0.0125</td>
+<td style="text-align: center;">0.0875</td>
 </tr>
 <tr class="even">
-<td>d10</td>
-<td>5.5</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: center;">0.0175</td>
+<td style="text-align: center;">0.0825</td>
 </tr>
 <tr class="odd">
-<td>d12</td>
-<td>6.5</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: center;">0.0225</td>
+<td style="text-align: center;">0.0775</td>
 </tr>
 <tr class="even">
-<td>d20</td>
-<td>10.5</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: center;">0.0275</td>
+<td style="text-align: center;">0.0725</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">7</td>
+<td style="text-align: center;">0.0325</td>
+<td style="text-align: center;">0.0675</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">8</td>
+<td style="text-align: center;">0.0375</td>
+<td style="text-align: center;">0.0625</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">9</td>
+<td style="text-align: center;">0.0425</td>
+<td style="text-align: center;">0.0575</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">10</td>
+<td style="text-align: center;">0.0475</td>
+<td style="text-align: center;">0.0525</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">11</td>
+<td style="text-align: center;">0.0525</td>
+<td style="text-align: center;">0.0475</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">12</td>
+<td style="text-align: center;">0.0575</td>
+<td style="text-align: center;">0.0425</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">13</td>
+<td style="text-align: center;">0.0625</td>
+<td style="text-align: center;">0.0375</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">14</td>
+<td style="text-align: center;">0.0675</td>
+<td style="text-align: center;">0.0325</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">15</td>
+<td style="text-align: center;">0.0725</td>
+<td style="text-align: center;">0.0275</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">16</td>
+<td style="text-align: center;">0.0775</td>
+<td style="text-align: center;">0.0225</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">17</td>
+<td style="text-align: center;">0.0825</td>
+<td style="text-align: center;">0.0175</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">18</td>
+<td style="text-align: center;">0.0875</td>
+<td style="text-align: center;">0.0125</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">19</td>
+<td style="text-align: center;">0.0925</td>
+<td style="text-align: center;">0.0075</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">20</td>
+<td style="text-align: center;">0.0975</td>
+<td style="text-align: center;">0.0025</td>
 </tr>
 </tbody>
 </table>
-<h3 id="average-of-a-die-roll-with-advantage-n-faces">Average of a die roll with advantage (n faces)</h3>
+<h3 id="sum-of-values">Sum of values</h3>
+<p>The probability of getting the sum <span class="math inline">\(x\)</span> from <span class="math inline">\(n\)</span> rolls of <span class="math inline">\(k\)</span>-sided dice is given by <span class="math display">\[
+P(x; n, k) = \frac{1}{k^n} \times \sum_{i=0}^{i_{\text{max}}} (-1)^i \binom{n}{i} \binom{x - ki - 1}{x - ki - n} \
+\text{where}\ i_{\text{max}} = \left\lfloor \frac{x - n}{k} \right\rfloor
+\]</span></p>
+<p>When <span class="math inline">\(n = 1\)</span>, this is a uniform distribution. When <span class="math inline">\(n = 2\)</span>, it is a triangular distribution. As <span class="math inline">\(n\)</span> approaches infinity, it takes the shape of a normal distribution (bell curve). This is due to the central limit theorem.</p>
+<h4 id="anydice-2">AnyDice</h4>
+<pre><code>output NdK        \ Distribution \
+output NdK = X    \ Probability  \</code></pre>
+<h1 id="dice-averages">Dice Averages</h1>
+<h2 id="single-die-1">Single die</h2>
+<p>A single die roll follows a discrete uniform distribution between its minimum and maximum value, the average of which is given by</p>
+<p><span class="math display">\[\frac{(\text{min} + \text{max})}{2}\]</span></p>
+<p>Common averages are shown in the table below.</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Die</th>
+<th style="text-align: right;">Average</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">d4</td>
+<td style="text-align: right;">2.5</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">d6</td>
+<td style="text-align: right;">3.5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">d8</td>
+<td style="text-align: right;">4.5</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">d10</td>
+<td style="text-align: right;">5.5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">d12</td>
+<td style="text-align: right;">6.5</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">d20</td>
+<td style="text-align: right;">10.5</td>
+</tr>
+</tbody>
+</table>
+<h2 id="multiple-dice-1">Multiple dice</h2>
+<p>To get the average of the sum of multiple dice rolls, add together their individual averages.</p>
+<h2 id="two-dice-with-advantage">Two dice with advantage</h2>
+<p>When rolling two dice with <span class="math inline">\(n\)</span> sides and selecting the higher result, the average is given by</p>
 <p><span class="math display">\[\frac{2}{3n} + \frac{1}{2} - \frac{1}{6n}\]</span></p>
 <p>(Equals 13.825 for a d20.)</p>
-<h3 id="average-of-a-die-roll-with-disadvantage-n-faces">Average of a die roll with disadvantage (n faces)</h3>
+<h2 id="two-dice-with-disadvantage">Two dice with disadvantage</h2>
+<p>When rolling two dice with <span class="math inline">\(n\)</span> sides and selecting the lower result, the average is given by</p>
 <p><span class="math display">\[\frac{n}{3} + \frac{1}{2} + \frac{1}{6n}\]</span></p>
 <p>(Equals 7.175 for a d20.)</p>
-<h3 id="probability-mass-function-of-a-roll-with-disadvantage">Probability mass function of a roll with disadvantage</h3>
-<p>The probability of rolling any specific result <span class="math inline">\(x\)</span> out of <span class="math inline">\(m\)</span> rolls of dice with <span class="math inline">\(n\)</span> sides at advantage is equal to</p>
-<p><span class="math display">\[P(X = x) = \frac{x^m - (x-1)^m}{n^m}\]</span></p>
-<p>And the PMF when rolling at disadvantage is</p>
-<p><span class="math display">\[P(X = x) = \frac{(n-x+1)^m - (n-x)^m }{n^m} \]</span></p>
-<p>You can also use the following table, which shows probabilities of different rolls when rolling 2d20 at advantage or disadvantage.</p>
-<table>
-<thead>
-<tr class="header">
-<th>Roll</th>
-<th>Advantage</th>
-<th>Disadvantage</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1</td>
-<td>0.0025</td>
-<td>0.0975</td>
-</tr>
-<tr class="even">
-<td>2</td>
-<td>0.0075</td>
-<td>0.0925</td>
-</tr>
-<tr class="odd">
-<td>3</td>
-<td>0.0125</td>
-<td>0.0875</td>
-</tr>
-<tr class="even">
-<td>4</td>
-<td>0.0175</td>
-<td>0.0825</td>
-</tr>
-<tr class="odd">
-<td>5</td>
-<td>0.0225</td>
-<td>0.0775</td>
-</tr>
-<tr class="even">
-<td>6</td>
-<td>0.0275</td>
-<td>0.0725</td>
-</tr>
-<tr class="odd">
-<td>7</td>
-<td>0.0325</td>
-<td>0.0675</td>
-</tr>
-<tr class="even">
-<td>8</td>
-<td>0.0375</td>
-<td>0.0625</td>
-</tr>
-<tr class="odd">
-<td>9</td>
-<td>0.0425</td>
-<td>0.0575</td>
-</tr>
-<tr class="even">
-<td>10</td>
-<td>0.0475</td>
-<td>0.0525</td>
-</tr>
-<tr class="odd">
-<td>11</td>
-<td>0.0525</td>
-<td>0.0475</td>
-</tr>
-<tr class="even">
-<td>12</td>
-<td>0.0575</td>
-<td>0.0425</td>
-</tr>
-<tr class="odd">
-<td>13</td>
-<td>0.0625</td>
-<td>0.0375</td>
-</tr>
-<tr class="even">
-<td>14</td>
-<td>0.0675</td>
-<td>0.0325</td>
-</tr>
-<tr class="odd">
-<td>15</td>
-<td>0.0725</td>
-<td>0.0275</td>
-</tr>
-<tr class="even">
-<td>16</td>
-<td>0.0775</td>
-<td>0.0225</td>
-</tr>
-<tr class="odd">
-<td>17</td>
-<td>0.0825</td>
-<td>0.0175</td>
-</tr>
-<tr class="even">
-<td>18</td>
-<td>0.0875</td>
-<td>0.0125</td>
-</tr>
-<tr class="odd">
-<td>19</td>
-<td>0.0925</td>
-<td>0.0075</td>
-</tr>
-<tr class="even">
-<td>20</td>
-<td>0.0975</td>
-<td>0.0025</td>
-</tr>
-</tbody>
-</table>
-<h2 id="accuracy">Accuracy</h2>
+<h1 id="accuracy">Accuracy</h1>
 <p>Note that accuracy is bounded within 0.05 to 0.95 (without advantage/disadvantage), because natural 1s always miss and 20s always hit. An attack roll that ties with AC hits. The math for passing an ability check or saving throw is the same as for landing an attack, using the DC instead of the enemy AC. Ability checks and saves are bounded within 0 to 1, with no automatic success or failures on natural 20s or 1s.</p>
 <p>Chance to hit and chance to miss can be converted from one to the other by subtracting the chance from 1.</p>
 <p>See these in action <a href="https://www.desmos.com/calculator/ztkuvo32nt">here</a>.</p>
-<h3 id="chance-to-hit">Chance to hit</h3>
+<h2 id="chance-to-hit">Chance to hit</h2>
 <p><span class="math display">\[\frac{21 + \text{mods} - \text{AC}}{20}\]</span></p>
-<h3 id="chance-to-miss">Chance to miss</h3>
+<h4 id="anydice-3">AnyDice</h4>
+<pre><code>output d20 + MODS &gt;= AC</code></pre>
+<h2 id="chance-to-miss">Chance to miss</h2>
 <p><span class="math display">\[\frac{\text{AC} - \text{mods} - 1}{20}\]</span></p>
-<h3 id="chance-to-hit-advantage">Chance to hit (advantage)</h3>
+<h4 id="anydice-4">AnyDice</h4>
+<pre><code>output d20 + MODS &lt; AC</code></pre>
+<h2 id="chance-to-hit-advantage">Chance to hit (advantage)</h2>
 <p><span class="math display">\[1 - (\text{chance to miss})^2\]</span></p>
-<h3 id="chance-to-hit-disadvantage">Chance to hit (disadvantage)</h3>
+<h4 id="anydice-5">AnyDice</h4>
+<pre><code>output [highest 1 of 2d20] + MODS &gt;= AC
+output 1@2d20 + MODS &gt;= AC    \ Alternative syntax \</code></pre>
+<h2 id="chance-to-hit-disadvantage">Chance to hit (disadvantage)</h2>
 <p><span class="math display">\[(\text{chance to hit})^2\]</span></p>
-<h3 id="average-damage-per-round">Average damage per round</h3>
+<h4 id="anydice-6">AnyDice</h4>
+<pre><code>output [lowest 1 of 2d20] + MODS &gt;= AC
+output 2@2d20 + MODS &gt;= AC    \ Alternative syntax \</code></pre>
+<h2 id="average-damage-per-round">Average damage per round</h2>
 <p><span class="math display">\[\text{number of attacks} \times \left\lbrack (\text{chance to hit} \times \text{dmg per attack}) + (\text{crit chance} \times \text{dmg dice per attack}) \right\rbrack\]</span></p>
 <p>If your attacks have varying accuracy or damage per hit, compute the attacks individually and add them together instead of multiplying by the number of attacks. Crit chance is typically <span class="math inline">\(\frac{1}{20} = 0.05\)</span> normally, <span class="math inline">\(1 - \frac{19}{20}^2 = 0.0975\)</span> with advantage, <span class="math inline">\(\frac{1}{20}^2 = 0.0025\)</span> with disadvantage. “Super advantage” (highest of 3d20, e.g. with Lucky or Elven Accuracy) is <span class="math inline">\(1 - \frac{19}{20}^3 = 0.142625\)</span>.</p>
 <p>See this in action <a href="https://www.desmos.com/calculator/nionuv71sl">here</a> (crits omitted for ease of use).</p>
-<h2 id="monster-stats">Monster Stats</h2>
+<h1 id="monster-stats">Monster Stats</h1>
 <p>Averages inferred from the Monster Manual by <a href="https://blogofholding.com/?p=7338">Blog of Holding</a>.</p>
-<h3 id="average-monster-ac">Average monster AC</h3>
+<h2 id="average-monster-ac">Average monster AC</h2>
 <p><span class="math display">\[13 + \frac{\text{CR}}{3}\]</span></p>
-<h3 id="average-attack-bonus">Average attack bonus</h3>
+<h2 id="average-attack-bonus">Average attack bonus</h2>
 <p><span class="math display">\[4 + \frac{\text{CR}}{2}\]</span></p>
-<h3 id="average-save-dc">Average save DC</h3>
+<h2 id="average-save-dc">Average save DC</h2>
 <p><span class="math display">\[11 + \frac{\text{CR}}{2}\]</span></p>
-<h2 id="miscellaneous">Miscellaneous</h2>
-<h3 id="proficiency-bonus-level-or-cr">Proficiency bonus (level or CR)</h3>
+<h1 id="miscellaneous">Miscellaneous</h1>
+<h2 id="proficiency-bonus-level-or-cr">Proficiency bonus (level or CR)</h2>
 <p><span class="math display">\[2 + \left\lfloor\frac{x-1}{4}\right\rfloor\]</span></p>
 </body>
 </html>
