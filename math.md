@@ -2,36 +2,32 @@
 title: D&D Math
 ---
 
-# Dice Probability
+## Dice Probability
 
-## Single die
+### Single die
 
 When rolling a single die with $k$ sides, the probability of any given outcome is $\frac{1}{k}$.
 
-## Multiple dice
+### Multiple dice
 
-### Highest value (advantage)
+#### Highest value (advantage)
 
 The probability of the highest roll out of $n$ rolls of $k$-sided dice equaling some value $x$ is given by
 
 $$p(x; n, k) = \frac{x^n - (x-1)^n}{k^n}$$
 
-#### AnyDice
-
-```
+```anydice
 output [highest 1 of NdK] = X
 output 1@NdK = X    \ Alternative syntax \
 ```
 
-### Lowest value (disadvantage)
+#### Lowest value (disadvantage)
 
 The probability of the lowest roll out of $n$ rolls of $k$-sided dice equaling some value $x$ is given by
 
 $$p(x; n, k) = \frac{(k-x+1)^n - (k-x)^n }{k^n} $$
 
-#### AnyDice
-
-```
+```anydice
 output [lowest 1 of NdK] = X
 output N@NdK = X    \ Alternative syntax \
 ```
@@ -61,24 +57,24 @@ Roll ($x$) | Advantage | Disadvantage
 19       | 0.0925    | 0.0075
 20       | 0.0975    | 0.0025
 
-### Sum of values
+#### Sum of values
 
 The probability of getting the sum $x$ from $n$ rolls of $k$-sided dice is given by
-$$
-P(x; n, k) = \frac{1}{k^n} \times \sum_{i=0}^{i_{\text{max}}} (-1)^i \binom{n}{i} \binom{x - ki - 1}{x - ki - n} \
-\text{where}\ i_{\text{max}} = \left\lfloor \frac{x - n}{k} \right\rfloor
-$$
+
+$$P(x; n, k) = \frac{1}{k^n} \times \sum_{i=0}^{i_{\text{max}}} (-1)^i \binom{n}{i} \binom{x - ki - 1}{x - ki - n}$$
+
+where $i_{\text{max}} = \left\lfloor \frac{x - n}{k} \right\rfloor$.
 
 When $n = 1$, this is a uniform distribution. When $n = 2$, it is a triangular distribution. As $n$ approaches infinity, it takes the shape of a normal distribution (bell curve). This is due to the central limit theorem.
 
-#### AnyDice
+```anydice
+output NdK        \ Distribution \
+output NdK = X    \ Probability  \
+```
 
-    output NdK        \ Distribution \
-    output NdK = X    \ Probability  \
+## Dice Averages
 
-# Dice Averages
-
-## Single die
+### Single die
 
 A single die roll follows a discrete uniform distribution between its minimum and maximum value, the average of which is given by
 
@@ -95,11 +91,11 @@ d10 | 5.5
 d12 | 6.5
 d20 | 10.5
 
-## Multiple dice
+### Multiple dice
 
 To get the average of the sum of multiple dice rolls, add together their individual averages.
 
-## Two dice with advantage
+### Two dice with advantage
 
 When rolling two dice with $n$ sides and selecting the higher result, the average is given by
 
@@ -107,7 +103,7 @@ $$\frac{2}{3n} + \frac{1}{2} - \frac{1}{6n}$$
 
 (Equals 13.825 for a d20.)
 
-## Two dice with disadvantage
+### Two dice with disadvantage
 
 When rolling two dice with $n$ sides and selecting the lower result, the average is given by
 
@@ -115,74 +111,111 @@ $$\frac{n}{3} + \frac{1}{2} + \frac{1}{6n}$$
 
 (Equals 7.175 for a d20.)
 
-# Accuracy
+## Accuracy
 
-Note that accuracy is bounded within 0.05 to 0.95 (without advantage/disadvantage), because natural 1s always miss and 20s always hit. An attack roll that ties with AC hits. The math for passing an ability check or saving throw is the same as for landing an attack, using the DC instead of the enemy AC. Ability checks and saves are bounded within 0 to 1, with no automatic success or failures on natural 20s or 1s.
+Note that accuracy is bounded within 0.05 to 0.95 (without advantage or disadvantage) because natural 1s always miss and 20s always hit. An attack roll that ties with AC hits.
+
+The math for passing an ability check or saving throw is the same as for landing an attack, using the DC instead of the enemy AC. Ability checks and saves are bounded within 0 to 1, with no automatic success or failures on natural 20s or 1s.
 
 Chance to hit and chance to miss can be converted from one to the other by subtracting the chance from 1.
 
 See these in action [here](https://www.desmos.com/calculator/ztkuvo32nt).
 
-## Chance to hit
+### Chance to hit
 
 $$\frac{21 + \text{mods} - \text{AC}}{20}$$
 
-#### AnyDice
+```anydice
+output d20 + MODS >= AC
+```
 
-    output d20 + MODS >= AC
+### Chance to miss
 
-## Chance to miss
+$$1 - \text{(chance to hit)},\;\text{or}\;\frac{\text{AC} - \text{mods} - 1}{20}$$
 
-$$\frac{\text{AC} - \text{mods} - 1}{20}$$
+```anydice
+output d20 + MODS < AC
+```
 
-#### AnyDice
-
-    output d20 + MODS < AC
-
-## Chance to hit (advantage)
+### Chance to hit (advantage)
 
 $$1 - (\text{chance to miss})^2$$
 
-#### AnyDice
+```anydice
+output [highest 1 of 2d20] + MODS >= AC
+output 1@2d20 + MODS >= AC    \ Alternative syntax \
+```
 
-    output [highest 1 of 2d20] + MODS >= AC
-    output 1@2d20 + MODS >= AC    \ Alternative syntax \
-
-## Chance to hit (disadvantage)
+### Chance to hit (disadvantage)
 
 $$(\text{chance to hit})^2$$
 
-#### AnyDice
+```anydice
+output [lowest 1 of 2d20] + MODS >= AC
+output 2@2d20 + MODS >= AC    \ Alternative syntax \
+```
 
-    output [lowest 1 of 2d20] + MODS >= AC
-    output 2@2d20 + MODS >= AC    \ Alternative syntax \
+### Chance to critically hit
+Your chance to crit follows the same formula as your chance to hit (normally or with advantage or disadvantage), except with $\text{mods} = 0$ and $\text{AC} = t$, where $t$ is the minimum roll you need to crit (typically 20).
 
-## Average damage per round
+$$\frac{21 - t}{20}$$
 
-$$\text{number of attacks} \times \left\lbrack (\text{chance to hit} \times \text{dmg per attack}) + (\text{crit chance} \times \text{dmg dice per attack}) \right\rbrack$$
+You can apply the formulae for advantage/disadvantage as needed.
 
-If your attacks have varying accuracy or damage per hit, compute the attacks individually and add them together instead of multiplying by the number of attacks. Crit chance is typically $\frac{1}{20} = 0.05$ normally, $1 - \frac{19}{20}^2 = 0.0975$ with advantage, $\frac{1}{20}^2 = 0.0025$ with disadvantage. "Super advantage" (highest of 3d20, e.g. with Lucky or Elven Accuracy) is $1 - \frac{19}{20}^3 = 0.142625$.
+```anydice
+output    d20 = T    \ Normal       \
+output 1@2d20 = T    \ Advantage    \
+output 2@2d20 = T    \ Disadvantage \
+```
+
+### Chance to critically miss
+Your chance to crit miss is the chance of rolling a natural 1 on a d20.
+
+Normal | Advantage | Disadvantage
+-------+-----------+-------------
+0.05   | 0.0025    | 0.0975
+
+### Chance to hit (including crits)
+Explicitly accounting for crits and crit misses is typically not necessary in a bounded-accuracy system, since it is almost never the case that characters end up fighting creatures they can only hit with crits, or creatures they always hit except on crit misses. Nevertheless, it is possible to calculate this precisely with a few additional steps.
+
+First, calculate your chance of [critically hitting](#chance-to-critically-hit) and [critically missing](#chance-to-critically-miss). Then, calculate [your chance of hitting without accounting for crits](#chance-to-hit). Your true chance to hit cannot be lower than your crit chance and cannot be higher than your crit miss chance; otherwise, it is the chance to hit you calculated.
+
+$$\max(\min(P(\text{hit}),\ P(\text{crit miss})),\ P(\text{crit hit}))$$
+
+If you are rolling with advantage or disadvantage, perform the above calculations as if you were rolling normally and then apply [advantage](#chance-to-hit-advantage) or [disadvantage](#chance-to-hit-disadvantage) to this value as needed.
+
+### Average damage per round
+
+$$
+\text{number of attacks} \times \left\lbrack\;\begin{array}{c}
+(\text{chance to hit} \times \text{dmg per attack}) \\
++\ (\text{crit chance} \times \text{dmg dice per attack})
+\end{array}
+\;\right\rbrack
+$$
+
+If your attacks have varying accuracy or damage per hit, compute the attacks individually and add them together instead of multiplying by the number of attacks.
 
 See this in action [here](https://www.desmos.com/calculator/nionuv71sl) (crits omitted for ease of use).
 
-# Monster Stats
+## Monster Stats
 
 Averages inferred from the Monster Manual by [Blog of Holding](https://blogofholding.com/?p=7338).
 
-## Average monster AC
+### Average monster AC
 
 $$13 + \frac{\text{CR}}{3}$$
 
-## Average attack bonus
+### Average attack bonus
 
 $$4 + \frac{\text{CR}}{2}$$
 
-## Average save DC
+### Average save DC
 
 $$11 + \frac{\text{CR}}{2}$$
 
-# Miscellaneous
+## Miscellaneous
 
-## Proficiency bonus (level or CR)
+### Proficiency bonus (level or CR)
 
 $$2 + \left\lfloor\frac{x-1}{4}\right\rfloor$$
