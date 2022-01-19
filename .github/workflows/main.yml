@@ -1,0 +1,32 @@
+name: Build and Deploy
+on:
+  push:
+    branches:
+      master
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2.4.0
+
+      - name: Install and Build 🔧
+        uses: docker://pandoc/core:2.16.2
+        with:
+          args: >-
+            -f markdown
+            -t html
+            --toc
+            -s
+            --standalone
+            --mathjax
+            --template template.html
+            --lua-filter=fix-links.lua
+            math.md
+            -o dist/index.html
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4.2.2
+        with:
+          branch: gh-pages # The branch the action should deploy to.
+          folder: dist # The folder the action should deploy.
