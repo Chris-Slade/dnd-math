@@ -155,20 +155,17 @@
           display: none;
         }
         .main {
-          grid-column: 1 / span 3;
+          grid-column: 1 / 3;
         }
       }
       @media (min-width: 900px) {
         .sidebar {
           resize: horizontal;
-          min-width: min-content;
-          max-width: max-content;
           background-color: #fafafa;
           padding: 1em 1em;
-          position: sticky;
         }
         .main {
-          grid-column: 2 / span 3;
+          grid-column: 2 / 3;
         }
       }
       .header-link {
@@ -456,16 +453,18 @@ output 2@2d20 = T    \ Disadvantage \</code></pre>
 <h3 id="chance-to-hit-including-crits"><a href="#chance-to-hit-including-crits" class="header-link">Chance to hit (including crits)</a></h3>
 <p>Explicitly accounting for crits and crit misses is typically not necessary in a bounded-accuracy system, since it is almost never the case that characters end up fighting creatures they can only hit with crits, or creatures they always hit except on crit misses. Nevertheless, it is possible to calculate this precisely with a few additional steps.</p>
 <p>First, calculate your chance of <a href="#chance-to-critically-hit">critically hitting</a> and <a href="#chance-to-critically-miss">critically missing</a>. Then, calculate <a href="#chance-to-hit">your chance of hitting without accounting for crits</a>. Your true chance to hit cannot be lower than your crit chance and cannot be higher than your crit miss chance; otherwise, it is the chance to hit you calculated.</p>
-<p><span class="math display">\[\max(\min(P(\text{hit}),\ P(\text{crit miss})),\ P(\text{crit hit}))\]</span></p>
+<p><span class="math display">\[\max(\min(P_\text{hit},\ P_\text{crit miss}),\ P_\text{crit hit})\]</span></p>
 <p>If you are rolling with advantage or disadvantage, perform the above calculations as if you were rolling normally and then apply <a href="#chance-to-hit-advantage">advantage</a> or <a href="#chance-to-hit-disadvantage">disadvantage</a> to this value as needed.</p>
 <h3 id="average-damage-per-round"><a href="#average-damage-per-round" class="header-link">Average damage per round</a></h3>
-<p><span class="math display">\[
-\text{number of attacks} \times \left\lbrack\;\begin{array}{c}
-(\text{chance to hit} \times \text{dmg per attack}) \\
-+\ (\text{crit chance} \times \text{dmg dice per attack})
-\end{array}
-\;\right\rbrack
-\]</span></p>
+<p><span class="math display">\[N \times \left( P_\text{hit} \cdot D_\text{attack} + P_\text{crit} \cdot D_\text{crit} \right)\]</span></p>
+<p>where</p>
+<ul>
+<li><span class="math inline">\(N\)</span> is the number of attacks you make.</li>
+<li><span class="math inline">\(P_\text{hit}\)</span> is your chance of hitting.</li>
+<li><span class="math inline">\(D_\text{attack}\)</span> is your average damage per attack (damage dice with modifiers).</li>
+<li><span class="math inline">\(P_\text{crit}\)</span> is your chance of critting.</li>
+<li><span class="math inline">\(D_\text{crit}\)</span> is the average additional damage done by a crit (damage dice without modifiers).</li>
+</ul>
 <p>If your attacks have varying accuracy or damage per hit, compute the attacks individually and add them together instead of multiplying by the number of attacks.</p>
 <p>See this in action <a href="https://www.desmos.com/calculator/nionuv71sl">here</a> (crits omitted for ease of use).</p>
 <h2 id="monster-stats"><a href="#monster-stats" class="header-link">Monster Stats</a></h2>
