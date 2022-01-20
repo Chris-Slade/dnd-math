@@ -26,6 +26,9 @@
       * {
         box-sizing: border-box;
       }
+      :root {
+        --content-padding: 1em;
+      }
       html {
         line-height: 1.5;
         font-family: "Georgia", serif;
@@ -135,6 +138,7 @@
       }
       #TOC a:not(:hover) {
         text-decoration: none;
+        color: rgba(26, 26, 26, 0.8);
       }
       code {
         white-space: pre-wrap;
@@ -143,35 +147,35 @@
         display: block;
         text-align: center;
         margin: 0.5rem auto;
+        max-width: calc(100vw - 2 * var(--content-padding));
+        overflow-x: auto;
       }
       .layout {
-        display: grid;
-        grid-template-columns: 0.25fr 1fr 0.25fr;
-        height: 100vh;
-        overflow-y: auto;
+        display: flex;
+        flex-wrap: wrap;
+      }
+      .sidebar {
+        flex-basis: 20rem;
+        flex-grow: 1;
+        box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+          rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
       }
       .main {
+        flex-basis: 0;
+        flex-grow: 999;
         display: flex;
         flex-direction: column;
         align-items: center;
-        grid-column: 2 / 3;
+        box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+          rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+      }
+      .title {
+        font-size: xx-large;
       }
       .content {
         max-width: 70ch;
         min-width: min-content;
-        padding: 1em;
-      }
-      @media (max-width: 899px) {
-        .sidebar {
-          display: none;
-        }
-      }
-      @media (min-width: 900px) {
-        .sidebar {
-          resize: horizontal;
-          background-color: #fafafa;
-          padding: 1em 1em;
-        }
+        padding: var(--content-padding);
       }
       .header-link {
         text-decoration: none;
@@ -181,6 +185,10 @@
       }
       .header-link:hover:after {
         content: " 🔗";
+      }
+      .toc-title {
+        text-align: center;
+        font-size: large;
       }
     </style>
     $for(css)$
@@ -192,10 +200,13 @@
     <div class="layout">
       <div class="sidebar">
         $if(toc)$
-        <nav id="$idprefix$TOC" role="doc-toc">$table-of-contents$</nav>
+        <nav id="$idprefix$TOC" role="doc-toc">
+          <h2 class="toc-title">Table of Contents</h2>
+          $table-of-contents$
+        </nav>
         $endif$
       </div>
-      <div class="main">
+      <main class="main">
         <article class="content">
           $for(include-before)$ $include-before$ $endfor$ $if(title)$
           <header id="title-block-header">
@@ -210,7 +221,7 @@
           </header>
           $endif$ $body$ $for(include-after)$ $include-after$ $endfor$
         </article>
-      </div>
+      </main>
     </div>
   </body>
 </html>
