@@ -154,6 +154,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        grid-column: 2 / 3;
       }
       .content {
         max-width: 70ch;
@@ -164,21 +165,12 @@
         .sidebar {
           display: none;
         }
-        .main {
-          grid-column: 1 / span 3;
-        }
       }
       @media (min-width: 900px) {
         .sidebar {
           resize: horizontal;
-          min-width: min-content;
-          max-width: max-content;
           background-color: #fafafa;
           padding: 1em 1em;
-          position: sticky;
-        }
-        .main {
-          grid-column: 2 / span 3;
         }
       }
       .header-link {

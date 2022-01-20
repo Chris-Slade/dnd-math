@@ -180,19 +180,21 @@ Explicitly accounting for crits and crit misses is typically not necessary in a 
 
 First, calculate your chance of [critically hitting](#chance-to-critically-hit) and [critically missing](#chance-to-critically-miss). Then, calculate [your chance of hitting without accounting for crits](#chance-to-hit). Your true chance to hit cannot be lower than your crit chance and cannot be higher than your crit miss chance; otherwise, it is the chance to hit you calculated.
 
-$$\max(\min(P(\text{hit}),\ P(\text{crit miss})),\ P(\text{crit hit}))$$
+$$\max(\min(P_\text{hit},\ P_\text{crit miss}),\ P_\text{crit hit})$$
 
 If you are rolling with advantage or disadvantage, perform the above calculations as if you were rolling normally and then apply [advantage](#chance-to-hit-advantage) or [disadvantage](#chance-to-hit-disadvantage) to this value as needed.
 
 ### Average damage per round
 
-$$
-\text{number of attacks} \times \left\lbrack\;\begin{array}{c}
-(\text{chance to hit} \times \text{dmg per attack}) \\
-+\ (\text{crit chance} \times \text{dmg dice per attack})
-\end{array}
-\;\right\rbrack
-$$
+$$N \times \left( P_\text{hit} \cdot D_\text{attack} + P_\text{crit} \cdot D_\text{crit} \right)$$
+
+where
+
+- $N$ is the number of attacks you make.
+- $P_\text{hit}$ is your chance of hitting.
+- $D_\text{attack}$ is your average damage per attack (damage dice with modifiers).
+- $P_\text{crit}$ is your chance of critting.
+- $D_\text{crit}$ is the average additional damage done by a crit (damage dice without modifiers).
 
 If your attacks have varying accuracy or damage per hit, compute the attacks individually and add them together instead of multiplying by the number of attacks.
 
