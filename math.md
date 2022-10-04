@@ -99,7 +99,7 @@ To get the average of the sum of multiple dice rolls, add together their individ
 
 When rolling two dice with $n$ sides and selecting the higher result, the average is given by
 
-$$\frac{2}{3n} + \frac{1}{2} - \frac{1}{6n}$$
+$$\frac{2n}{3} + \frac{1}{2} - \frac{1}{6n}$$
 
 (Equals 13.825 for a d20.)
 
