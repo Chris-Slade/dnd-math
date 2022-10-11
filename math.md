@@ -10,6 +10,36 @@ When rolling a single die with $k$ sides, the probability of any given outcome i
 
 ### Multiple dice
 
+#### $k$th Value
+
+If $F$ is the CDF of one $m$-sided die and you roll $n$ of those dice, the CDF for the $k$th highest roll is
+
+$$\sum_{j=1}^{k} (-1)^{k+j} \binom{n - j}{k - j} \binom{n}{j - 1} F^{n + 1 - j}$$
+
+```anydice
+output K@NdM
+```
+
+Applying this formula can be done using a little bit of linear algebra. For example, to find the expected value of the 3rd lowest roll of 4d6, you can treat the CDF as a list of probabilities:
+
+$$\left[\frac{1}{6}, \frac{2}{6}, \frac{3}{6}, \frac{4}{6}, \frac{5}{6}, \frac{6}{6}\right]$$
+
+Then, use the formula to find the coefficients of a polynomial:
+
+$$(-1)^{3+1} \binom{4-1}{3-1} \binom{4}{1-1} = 3$$
+$$(-1)^{3+2} \binom{4-2}{3-2} \binom{4}{2-1} = -8$$
+$$(-1)^{3+3} \binom{4-3}{3-3} \binom{4}{3-1} = 6$$
+
+This gives the polynomial $f(x) = 3x^4 - 8x^3 + 6x^2$. Apply this function $f$ to each value in our "CDF":
+
+$$\left[f\left(\frac{1}{6}\right), f\left(\frac{2}{6}\right), f\left(\frac{3}{6}\right), f\left(\frac{4}{6}\right), f\left(\frac{5}{6}\right), f\left(\frac{6}{6}\right)\right] = \left[\frac{19}{144}, \frac{11}{27}, \frac{11}{16}, \frac{8}{9}, \frac{425}{432}, 1\right]$$
+
+Then take the pairwise differences (subtract from each value the value to its left, or 0 in the case of the first value):
+
+$$\left[\frac{19}{144}, \frac{119}{432}, \frac{121}{432}, \frac{29}{144}, \frac{41}{432}, \frac{7}{432}\right]$$
+
+And take the dot product of this vector with the vector $[1, 2, 3, 4, 5, 6]$, which yields $\frac{1253}{432} \approx 2.90046$.
+
 #### Highest value (advantage)
 
 The probability of the highest roll out of $n$ rolls of $k$-sided dice equaling some value $x$ is given by
