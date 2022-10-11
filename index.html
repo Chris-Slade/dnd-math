@@ -223,6 +223,19 @@
 <h3 id="single-die"><a href="#single-die" class="header-link">Single die</a></h3>
 <p>When rolling a single die with <span class="math inline">\(k\)</span> sides, the probability of any given outcome is <span class="math inline">\(\frac{1}{k}\)</span>.</p>
 <h3 id="multiple-dice"><a href="#multiple-dice" class="header-link">Multiple dice</a></h3>
+<h4 id="kth-value"><a href="#kth-value" class="header-link"><span class="math inline">\(k\)</span>th Value</a></h4>
+<p>If <span class="math inline">\(F\)</span> is the CDF of one <span class="math inline">\(m\)</span>-sided die and you roll <span class="math inline">\(n\)</span> of those dice, the CDF for the <span class="math inline">\(k\)</span>th highest roll is</p>
+<p><span class="math display">\[\sum_{j=1}^{k} (-1)^{k+j} \binom{n - j}{k - j} \binom{n}{j - 1} F^{n + 1 - j}\]</span></p>
+<pre class="anydice"><code>output K@NdM</code></pre>
+<p>Applying this formula can be done using a little bit of linear algebra. For example, to find the expected value of the 3rd lowest roll of 4d6, you can treat the CDF as a list of probabilities:</p>
+<p><span class="math display">\[\left[\frac{1}{6}, \frac{2}{6}, \frac{3}{6}, \frac{4}{6}, \frac{5}{6}, \frac{6}{6}\right]\]</span></p>
+<p>Then, use the formula to find the coefficients of a polynomial:</p>
+<p><span class="math display">\[(-1)^{3+1} \binom{4-1}{3-1} \binom{4}{1-1} = 3\]</span> <span class="math display">\[(-1)^{3+2} \binom{4-2}{3-2} \binom{4}{2-1} = -8\]</span> <span class="math display">\[(-1)^{3+3} \binom{4-3}{3-3} \binom{4}{3-1} = 6\]</span></p>
+<p>This gives the polynomial <span class="math inline">\(f(x) = 3x^4 - 8x^3 + 6x^2\)</span>. Apply this function <span class="math inline">\(f\)</span> to each value in our “CDF”:</p>
+<p><span class="math display">\[\left[f\left(\frac{1}{6}\right), f\left(\frac{2}{6}\right), f\left(\frac{3}{6}\right), f\left(\frac{4}{6}\right), f\left(\frac{5}{6}\right), f\left(\frac{6}{6}\right)\right] = \left[\frac{19}{144}, \frac{11}{27}, \frac{11}{16}, \frac{8}{9}, \frac{425}{432}, 1\right]\]</span></p>
+<p>Then take the pairwise differences (subtract from each value the value to its left, or 0 in the case of the first value):</p>
+<p><span class="math display">\[\left[\frac{19}{144}, \frac{119}{432}, \frac{121}{432}, \frac{29}{144}, \frac{41}{432}, \frac{7}{432}\right]\]</span></p>
+<p>And take the dot product of this vector with the vector <span class="math inline">\([1, 2, 3, 4, 5, 6]\)</span>, which yields <span class="math inline">\(\frac{1253}{432} \approx 2.90046\)</span>.</p>
 <h4 id="highest-value-advantage"><a href="#highest-value-advantage" class="header-link">Highest value (advantage)</a></h4>
 <p>The probability of the highest roll out of <span class="math inline">\(n\)</span> rolls of <span class="math inline">\(k\)</span>-sided dice equaling some value <span class="math inline">\(x\)</span> is given by</p>
 <p><span class="math display">\[p(x; n, k) = \frac{x^n - (x-1)^n}{k^n}\]</span></p>
