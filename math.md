@@ -143,6 +143,8 @@ $$\frac{n}{3} + \frac{1}{2} + \frac{1}{6n}$$
 
 ## Accuracy
 
+The probability of an event such as a hit or miss is notated $P(\text{event})$ or $P_\text{event}$.
+
 Note that accuracy is bounded within 0.05 to 0.95 (without advantage or disadvantage) because natural 1s always miss and 20s always hit. An attack roll that ties with AC hits.
 
 The math for passing an ability check or saving throw is the same as for landing an attack, using the DC instead of the enemy AC. Ability checks and saves are bounded within 0 to 1, with no automatic success or failures on natural 20s or 1s.
@@ -153,7 +155,7 @@ See these in action [here](https://www.desmos.com/calculator/ztkuvo32nt).
 
 ### Chance to hit
 
-$$\frac{21 + \text{mods} - \text{AC}}{20}$$
+$$P(\text{hit}) = \frac{21 + \text{mods} - \text{AC}}{20}$$
 
 ```anydice
 output d20 + MODS >= AC
@@ -161,7 +163,7 @@ output d20 + MODS >= AC
 
 ### Chance to miss
 
-$$1 - \text{(chance to hit)},\;\text{or}\;\frac{\text{AC} - \text{mods} - 1}{20}$$
+$$P(\text{miss}) = 1 - P(\text{hit}),\;\text{or}\;\frac{\text{AC} - \text{mods} - 1}{20}$$
 
 ```anydice
 output d20 + MODS < AC
@@ -169,7 +171,7 @@ output d20 + MODS < AC
 
 ### Chance to hit (advantage)
 
-$$1 - (\text{chance to miss})^2$$
+$$1 - P(\text{miss})^2$$
 
 ```anydice
 output [highest 1 of 2d20] + MODS >= AC
@@ -178,17 +180,24 @@ output 1@2d20 + MODS >= AC    \ Alternative syntax \
 
 ### Chance to hit (disadvantage)
 
-$$(\text{chance to hit})^2$$
+$$P(\text{hit})^2$$
 
 ```anydice
 output [lowest 1 of 2d20] + MODS >= AC
 output 2@2d20 + MODS >= AC    \ Alternative syntax \
 ```
 
+### Generalized number of successes/failures
+When rolling with advantage, you are checking to see if at least one roll out of two (or three with Elven Accuracy) succeeds. This kind of calculation is also useful if you need to know something like how many of your attacks will hit on average against a certain AC when you have multiple attacks, or if you need to know your chance of landing at least one attack to apply a feature like Sneak Attack.
+
+The probability of getting $k$ successes out of $N$ independent trials, each with probability $p$ of success and $q = 1 - p$ of failure, is given by the Binomial distribution $$P(X = k) = \binom{n}{k} p^k q^{n-k}$$ where $$\binom{n}{k} = \frac{n!}{k!(n-k)!}$$ and $$n! = 1 \times 2 \times \ldots \times (n - 1) \times n$$
+
+There are a few special cases of this formula that are useful. The chance of all trials succeeding is $p^N$, and the chance of all trials failing is $q^N$. The chance of at least one trial succeeding is $1 - q^N$, and the chance of at least one trial failing is $1 - p^N$.
+
 ### Chance to critically hit
 Your chance to crit follows the same formula as your chance to hit (normally or with advantage or disadvantage), except with $\text{mods} = 0$ and $\text{AC} = t$, where $t$ is the minimum roll you need to crit (typically 20).
 
-$$\frac{21 - t}{20}$$
+$$P(\text{crit}) = \frac{21 - t}{20}$$
 
 You can apply the formulae for advantage/disadvantage as needed.
 
@@ -214,21 +223,26 @@ $$\max(\min(P_\text{hit},\ P_\text{crit miss}),\ P_\text{crit hit})$$
 
 If you are rolling with advantage or disadvantage, perform the above calculations as if you were rolling normally and then apply [advantage](#chance-to-hit-advantage) or [disadvantage](#chance-to-hit-disadvantage) to this value as needed.
 
+### Chance of first hit being a crit
+If you have additional damage dice that are only applied to the first hit on a turn, such as Sneak Attack or Favored Foe, and you make multiple attacks in a turn, you need to know the probability of your first hit being a critical hit. Intuitively, with a hit chance $H$ and a crit chance $C$, this equals $C + (1-H) \times C + (1-H)^2 \times C + \ldots$; in other words, it's the chance of your first attack critting, plus the chance of your first attack missing and your second attack critting, plus the chance of your first and second attacks missing and your third attack critting, and so on. In general, for $n$ attacks with a miss chance $M = 1 - H$ this comes out to $$C \times \sum_{k=0}^{n - 1} M^k = C \times \frac{1 - M^n}{1 - M}$$
+
 ### Average damage per round
 
-$$N \times \left( P_\text{hit} \cdot D_\text{attack} + P_\text{crit} \cdot D_\text{crit} \right)$$
+$$N \times \left( H \cdot D_\text{attack} + C \cdot D_\text{crit} \right)$$
 
 where
 
 - $N$ is the number of attacks you make.
-- $P_\text{hit}$ is your chance of hitting.
+- $H$ is your chance of hitting.
 - $D_\text{attack}$ is your average damage per attack (damage dice with modifiers).
-- $P_\text{crit}$ is your chance of critting.
+- $C$ is your chance of critting.
 - $D_\text{crit}$ is the average additional damage done by a crit (damage dice without modifiers).
+
+See this in action [here](https://www.desmos.com/calculator/nionuv71sl) (crits omitted for ease of use).
 
 If your attacks have varying accuracy or damage per hit, compute the attacks individually and add them together instead of multiplying by the number of attacks.
 
-See this in action [here](https://www.desmos.com/calculator/nionuv71sl) (crits omitted for ease of use).
+If you have bonus dice on your first attack that hits (such as Sneak Attack), it is calculated as $$P(\text{at least one hit}) \cdot D_\text{bonus} + P(\text{first hit crits}) \cdot D_\text{bonus}$$ and added to the total.
 
 ## Monster Stats
 
