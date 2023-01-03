@@ -197,9 +197,11 @@
 <li><a href="#chance-to-miss"><span>Chance to miss</span></a></li>
 <li><a href="#chance-to-hit-advantage"><span>Chance to hit (advantage)</span></a></li>
 <li><a href="#chance-to-hit-disadvantage"><span>Chance to hit (disadvantage)</span></a></li>
+<li><a href="#generalized-number-of-successesfailures"><span>Generalized number of successes/failures</span></a></li>
 <li><a href="#chance-to-critically-hit"><span>Chance to critically hit</span></a></li>
 <li><a href="#chance-to-critically-miss"><span>Chance to critically miss</span></a></li>
 <li><a href="#chance-to-hit-including-crits"><span>Chance to hit (including crits)</span></a></li>
+<li><a href="#chance-of-first-hit-being-a-crit"><span>Chance of first hit being a crit</span></a></li>
 <li><a href="#average-damage-per-round"><span>Average damage per round</span></a></li>
 </ul></li>
 <li><a href="#monster-stats"><span>Monster Stats</span></a>
@@ -415,27 +417,32 @@ output NdK = X    \ Probability  \</code></pre>
 <p><span class="math display">\[\frac{n}{3} + \frac{1}{2} + \frac{1}{6n}\]</span></p>
 <p>(Equals 7.175 for a d20.)</p>
 <h2 id="accuracy"><a href="#accuracy" class="header-link">Accuracy</a></h2>
+<p>The probability of an event such as a hit or miss is notated <span class="math inline">\(P(\text{event})\)</span> or <span class="math inline">\(P_\text{event}\)</span>.</p>
 <p>Note that accuracy is bounded within 0.05 to 0.95 (without advantage or disadvantage) because natural 1s always miss and 20s always hit. An attack roll that ties with AC hits.</p>
 <p>The math for passing an ability check or saving throw is the same as for landing an attack, using the DC instead of the enemy AC. Ability checks and saves are bounded within 0 to 1, with no automatic success or failures on natural 20s or 1s.</p>
 <p>Chance to hit and chance to miss can be converted from one to the other by subtracting the chance from 1.</p>
 <p>See these in action <a href="https://www.desmos.com/calculator/ztkuvo32nt">here</a>.</p>
 <h3 id="chance-to-hit"><a href="#chance-to-hit" class="header-link">Chance to hit</a></h3>
-<p><span class="math display">\[\frac{21 + \text{mods} - \text{AC}}{20}\]</span></p>
+<p><span class="math display">\[P(\text{hit}) = \frac{21 + \text{mods} - \text{AC}}{20}\]</span></p>
 <pre class="anydice"><code>output d20 + MODS &gt;= AC</code></pre>
 <h3 id="chance-to-miss"><a href="#chance-to-miss" class="header-link">Chance to miss</a></h3>
-<p><span class="math display">\[1 - \text{(chance to hit)},\;\text{or}\;\frac{\text{AC} - \text{mods} - 1}{20}\]</span></p>
+<p><span class="math display">\[P(\text{miss}) = 1 - P(\text{hit}),\;\text{or}\;\frac{\text{AC} - \text{mods} - 1}{20}\]</span></p>
 <pre class="anydice"><code>output d20 + MODS &lt; AC</code></pre>
 <h3 id="chance-to-hit-advantage"><a href="#chance-to-hit-advantage" class="header-link">Chance to hit (advantage)</a></h3>
-<p><span class="math display">\[1 - (\text{chance to miss})^2\]</span></p>
+<p><span class="math display">\[1 - P(\text{miss})^2\]</span></p>
 <pre class="anydice"><code>output [highest 1 of 2d20] + MODS &gt;= AC
 output 1@2d20 + MODS &gt;= AC    \ Alternative syntax \</code></pre>
 <h3 id="chance-to-hit-disadvantage"><a href="#chance-to-hit-disadvantage" class="header-link">Chance to hit (disadvantage)</a></h3>
-<p><span class="math display">\[(\text{chance to hit})^2\]</span></p>
+<p><span class="math display">\[P(\text{hit})^2\]</span></p>
 <pre class="anydice"><code>output [lowest 1 of 2d20] + MODS &gt;= AC
 output 2@2d20 + MODS &gt;= AC    \ Alternative syntax \</code></pre>
+<h3 id="generalized-number-of-successesfailures"><a href="#generalized-number-of-successesfailures" class="header-link">Generalized number of successes/failures</a></h3>
+<p>When rolling with advantage, you are checking to see if at least one roll out of two (or three with Elven Accuracy) succeeds. This kind of calculation is also useful if you need to know something like how many of your attacks will hit on average against a certain AC when you have multiple attacks, or if you need to know your chance of landing at least one attack to apply a feature like Sneak Attack.</p>
+<p>The probability of getting <span class="math inline">\(k\)</span> successes out of <span class="math inline">\(N\)</span> independent trials, each with probability <span class="math inline">\(p\)</span> of success and <span class="math inline">\(q = 1 - p\)</span> of failure, is given by the Binomial distribution <span class="math display">\[P(X = k) = \binom{n}{k} p^k q^{n-k}\]</span> where <span class="math display">\[\binom{n}{k} = \frac{n!}{k!(n-k)!}\]</span> and <span class="math display">\[n! = 1 \times 2 \times \ldots \times (n - 1) \times n\]</span></p>
+<p>There are a few special cases of this formula that are useful. The chance of all trials succeeding is <span class="math inline">\(p^N\)</span>, and the chance of all trials failing is <span class="math inline">\(q^N\)</span>. The chance of at least one trial succeeding is <span class="math inline">\(1 - q^N\)</span>, and the chance of at least one trial failing is <span class="math inline">\(1 - p^N\)</span>.</p>
 <h3 id="chance-to-critically-hit"><a href="#chance-to-critically-hit" class="header-link">Chance to critically hit</a></h3>
 <p>Your chance to crit follows the same formula as your chance to hit (normally or with advantage or disadvantage), except with <span class="math inline">\(\text{mods} = 0\)</span> and <span class="math inline">\(\text{AC} = t\)</span>, where <span class="math inline">\(t\)</span> is the minimum roll you need to crit (typically 20).</p>
-<p><span class="math display">\[\frac{21 - t}{20}\]</span></p>
+<p><span class="math display">\[P(\text{crit}) = \frac{21 - t}{20}\]</span></p>
 <p>You can apply the formulae for advantage/disadvantage as needed.</p>
 <pre class="anydice"><code>output    d20 = T    \ Normal       \
 output 1@2d20 = T    \ Advantage    \
@@ -463,18 +470,21 @@ output 2@2d20 = T    \ Disadvantage \</code></pre>
 <p>First, calculate your chance of <a href="#chance-to-critically-hit">critically hitting</a> and <a href="#chance-to-critically-miss">critically missing</a>. Then, calculate <a href="#chance-to-hit">your chance of hitting without accounting for crits</a>. Your true chance to hit cannot be lower than your crit chance and cannot be higher than your crit miss chance; otherwise, it is the chance to hit you calculated.</p>
 <p><span class="math display">\[\max(\min(P_\text{hit},\ P_\text{crit miss}),\ P_\text{crit hit})\]</span></p>
 <p>If you are rolling with advantage or disadvantage, perform the above calculations as if you were rolling normally and then apply <a href="#chance-to-hit-advantage">advantage</a> or <a href="#chance-to-hit-disadvantage">disadvantage</a> to this value as needed.</p>
+<h3 id="chance-of-first-hit-being-a-crit"><a href="#chance-of-first-hit-being-a-crit" class="header-link">Chance of first hit being a crit</a></h3>
+<p>If you have additional damage dice that are only applied to the first hit on a turn, such as Sneak Attack or Favored Foe, and you make multiple attacks in a turn, you need to know the probability of your first hit being a critical hit. Intuitively, with a hit chance <span class="math inline">\(H\)</span> and a crit chance <span class="math inline">\(C\)</span>, this equals <span class="math inline">\(C + (1-H) \times C + (1-H)^2 \times C + \ldots\)</span>; in other words, it’s the chance of your first attack critting, plus the chance of your first attack missing and your second attack critting, plus the chance of your first and second attacks missing and your third attack critting, and so on. In general, for <span class="math inline">\(n\)</span> attacks with a miss chance <span class="math inline">\(M = 1 - H\)</span> this comes out to <span class="math display">\[C \times \sum_{k=0}^{n - 1} M^k = C \times \frac{1 - M^n}{1 - M}\]</span></p>
 <h3 id="average-damage-per-round"><a href="#average-damage-per-round" class="header-link">Average damage per round</a></h3>
-<p><span class="math display">\[N \times \left( P_\text{hit} \cdot D_\text{attack} + P_\text{crit} \cdot D_\text{crit} \right)\]</span></p>
+<p><span class="math display">\[N \times \left( H \cdot D_\text{attack} + C \cdot D_\text{crit} \right)\]</span></p>
 <p>where</p>
 <ul>
 <li><span class="math inline">\(N\)</span> is the number of attacks you make.</li>
-<li><span class="math inline">\(P_\text{hit}\)</span> is your chance of hitting.</li>
+<li><span class="math inline">\(H\)</span> is your chance of hitting.</li>
 <li><span class="math inline">\(D_\text{attack}\)</span> is your average damage per attack (damage dice with modifiers).</li>
-<li><span class="math inline">\(P_\text{crit}\)</span> is your chance of critting.</li>
+<li><span class="math inline">\(C\)</span> is your chance of critting.</li>
 <li><span class="math inline">\(D_\text{crit}\)</span> is the average additional damage done by a crit (damage dice without modifiers).</li>
 </ul>
-<p>If your attacks have varying accuracy or damage per hit, compute the attacks individually and add them together instead of multiplying by the number of attacks.</p>
 <p>See this in action <a href="https://www.desmos.com/calculator/nionuv71sl">here</a> (crits omitted for ease of use).</p>
+<p>If your attacks have varying accuracy or damage per hit, compute the attacks individually and add them together instead of multiplying by the number of attacks.</p>
+<p>If you have bonus dice on your first attack that hits (such as Sneak Attack), it is calculated as <span class="math display">\[P(\text{at least one hit}) \cdot D_\text{bonus} + P(\text{first hit crits}) \cdot D_\text{bonus}\]</span> and added to the total.</p>
 <h2 id="monster-stats"><a href="#monster-stats" class="header-link">Monster Stats</a></h2>
 <p>Averages inferred from the Monster Manual by <a href="https://blogofholding.com/?p=7338">Blog of Holding</a>.</p>
 <h3 id="average-monster-ac"><a href="#average-monster-ac" class="header-link">Average monster AC</a></h3>
