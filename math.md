@@ -141,6 +141,22 @@ $$\frac{n}{3} + \frac{1}{2} + \frac{1}{6n}$$
 
 (Equals 7.175 for a d20.)
 
+## Dice Variance & Deviation
+
+The variance of a roll $D_k$ of a $k$-sided die $\text{Var}[D_k]$ is given by
+
+$$\frac{k^2 - 1}{12}$$
+
+Die rolls are independent, so the variance of the sum equals the sum of their variances,
+
+$$\text{Var}\left[\sum_k D_k\right] = \sum_k \text{Var}[D_k]$$
+
+This extends to more complicated roll mechanics than simple dice rolls as well, so long as they're not correlated with or dependent on each other. Refer to the [general definition of variance](https://en.wikipedia.org/wiki/Variance#Definition) for computing the individual variances of more complicated mechanics.
+
+The standard deviation is the square root of the variance, $\sqrt{\text{Var}[D_k]}$.
+
+AnyDice includes the standard deviation of a roll in its output.
+
 ## Accuracy
 
 The probability of an event such as a hit or miss is notated $P(\text{event})$ or $P_\text{event}$.
