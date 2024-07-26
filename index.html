@@ -191,6 +191,7 @@
 <li><a href="#two-dice-with-advantage"><span>Two dice with advantage</span></a></li>
 <li><a href="#two-dice-with-disadvantage"><span>Two dice with disadvantage</span></a></li>
 </ul></li>
+<li><a href="#dice-variance-deviation"><span>Dice Variance &amp; Deviation</span></a></li>
 <li><a href="#accuracy"><span>Accuracy</span></a>
 <ul>
 <li><a href="#chance-to-hit"><span>Chance to hit</span></a></li>
@@ -416,6 +417,14 @@ output NdK = X    \ Probability  \</code></pre>
 <p>When rolling two dice with <span class="math inline">\(n\)</span> sides and selecting the lower result, the average is given by</p>
 <p><span class="math display">\[\frac{n}{3} + \frac{1}{2} + \frac{1}{6n}\]</span></p>
 <p>(Equals 7.175 for a d20.)</p>
+<h2 id="dice-variance-deviation"><a href="#dice-variance-deviation" class="header-link">Dice Variance &amp; Deviation</a></h2>
+<p>The variance of a roll <span class="math inline">\(D_k\)</span> of a <span class="math inline">\(k\)</span>-sided die <span class="math inline">\(\text{Var}[D_k]\)</span> is given by</p>
+<p><span class="math display">\[\frac{k^2 - 1}{12}\]</span></p>
+<p>Die rolls are independent, so the variance of the sum equals the sum of their variances,</p>
+<p><span class="math display">\[\text{Var}\left[\sum_k D_k\right] = \sum_k \text{Var}[D_k]\]</span></p>
+<p>This extends to more complicated roll mechanics than simple dice rolls as well, so long as they’re not correlated with or dependent on each other. Refer to the <a href="https://en.wikipedia.org/wiki/Variance#Definition">general definition of variance</a> for computing the individual variances of more complicated mechanics.</p>
+<p>The standard deviation is the square root of the variance, <span class="math inline">\(\sqrt{\text{Var}[D_k]}\)</span>.</p>
+<p>AnyDice includes the standard deviation of a roll in its output.</p>
 <h2 id="accuracy"><a href="#accuracy" class="header-link">Accuracy</a></h2>
 <p>The probability of an event such as a hit or miss is notated <span class="math inline">\(P(\text{event})\)</span> or <span class="math inline">\(P_\text{event}\)</span>.</p>
 <p>Note that accuracy is bounded within 0.05 to 0.95 (without advantage or disadvantage) because natural 1s always miss and 20s always hit. An attack roll that ties with AC hits.</p>
